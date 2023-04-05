@@ -33,7 +33,7 @@
         <input type="file" id="image" name="image" class="form-control" />
         <img width="80" src="{{ asset('uploads/categories/'.$category->image) }}" alt="">
     </div>
-    
+
 
     <div class="mb-3">
         <label>Parent</label>

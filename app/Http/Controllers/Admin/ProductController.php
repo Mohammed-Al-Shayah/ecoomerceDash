@@ -24,8 +24,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $products=Product::all();
-        return view('admin.product.create', compact('products'));
+        $product=new Product();
+        $categories=Category::all();
+        return view('admin.product.create', compact('products','categories'));
 
 
     }
@@ -35,7 +36,45 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name_en'=>'required',
+            'name_ar'=>'required',
+            'image'=>'required',
+            'salary'=>'required',
+            'quantity'=>'required',
+            'category_id'=>'required',
+            'content_en'=>'required',
+            'content_ar'=>'required',
+        ]);
+
+
+        $img_path=rand().time().$request->file('image')->getClientOriginalName();
+        $request->file('image')->move(public_path('uploads/products'),$img_path);
+
+        $name=json_encode([
+            'en'=>$request->name_en,
+            'en'=>$request->name_en,
+        ],JSON_UNESCAPED_UNICODE);
+
+        $content=json_encode([
+            'en'=>$request->content_en,
+            'ar'=>$request->content_ar,
+        ],JSON_UNESCAPED_UNICODE);
+
+
+        $product=Product::Create([
+            'name'=>$name,
+            'image'=>$img_path,
+            'salary'=>$request->salary,
+            'sale_price'=>$request->sale_price,
+            'quantity'=>$request->quantity,
+            'category_id'=>$request->category_id,
+            'content'=>$content,
+
+        ]);
+
+
+        return redirect()->route('admin.product.index')->with('msg', 'Created product successfully')->with('type','success');
     }
 
     /**
@@ -49,9 +88,14 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+
+        // dd('saa');
+        $categories=Category::all();
+        $product=Product::findOrFail($id);
+        view('admin.product.edit',compact('product','categories'));
+
     }
 
     /**
@@ -59,7 +103,49 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $request->validate([
+            'name_en'=>'required',
+            'name_ar'=>'required',
+            'image'=>'required',
+            'salary'=>'required',
+            'quantity'=>'required',
+            'category_id'=>'required',
+            'content_en'=>'required',
+            'content_ar'=>'required',
+        ]);
+
+        $img_path=$request->image;
+        if($request->hasFile('image')){
+            $img_path=rand().time().$request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('uploads/products'),$img_path);
+        }
+
+
+        $name=json_encode([
+            'en'=>$request->name_en,
+            'en'=>$request->name_en,
+        ],JSON_UNESCAPED_UNICODE);
+
+        $content=json_encode([
+            'en'=>$request->content_en,
+            'ar'=>$request->content_ar,
+        ],JSON_UNESCAPED_UNICODE);
+
+
+        $product->update([
+            'name'=>$name,
+            'image'=>$img_path,
+            'salary'=>$request->salary,
+            'sale_price'=>$request->sale_price,
+            'quantity'=>$request->quantity,
+            'category_id'=>$request->category_id,
+            'content'=>$content,
+
+        ]);
+
+
+        return redirect()->route('admin.product.index')->with('msg', 'Edited product successfully')->with('type','info');
     }
 
     /**

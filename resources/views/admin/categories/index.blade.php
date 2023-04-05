@@ -13,7 +13,7 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-header">
-            <h4 class="card-title">All categories</h4>
+            <h4 class="card-title">All categories </h4>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -57,15 +57,23 @@
                                 </form>
                             </td>
                         </tr>
+
                         @endforeach
 
 
 
                     </tbody>
+
                 </table>
+                {{ $categories->links() }}
             </div>
         </div>
     </div>
 </div>
 
+@stop
+
+
+@section('scripts')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @stop

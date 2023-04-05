@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\Trans;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+
+    use HasFactory,Trans;
+
+    protected $guarded=[];
+    protected $fillable=['name', 'image', 'salary', 'quantity', 'category_id', 'content','sale_price'];
 
     public function category()
     {

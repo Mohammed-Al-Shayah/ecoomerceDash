@@ -25,6 +25,7 @@
                             <th scope="col">Image</th>
                             <th scope="col">Salary</th>
                             <th scope="col">Quantity</th>
+                            <th scope="col">Category</th>
                             <th scope="col">Created At</th>
                             <th scope="col">Action</th>
                         </tr>
@@ -35,11 +36,11 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>
-                              <span>{{ $product->name }}</span>
+                              <span>{{ $product->trans_name }}</span>
 
                             </td>
                             <td>
-                               <img width="80" src="{{ asset('uploads/categories/'.$product->image) }}" alt="">
+                               <img width="80" src="{{ asset('uploads/products/'.$product->image) }}" alt="">
 
                               </td>
                             <td><span >{{ $product->salary}}</span>
@@ -47,6 +48,10 @@
                         </td>
                         <td><span >{{ $product->quantity}}</span>
                         </td>
+
+                    </td>
+                    <td><span >{{ $product->category->trans_name}}</span>
+                    </td>
                             <td>
                                 <span>{{ $product->created_at ? $product->created_at->diffForHumans() :''}}</span>
 
@@ -72,4 +77,9 @@
     </div>
 </div>
 
+@stop
+
+
+@section('scripts')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @stop

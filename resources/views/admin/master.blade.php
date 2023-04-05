@@ -257,6 +257,7 @@
 
 
     <script src="{{asset('adminassets/./js/dashboard/dashboard-1.js')}}"></script>
+    
     @yield('scripts')
 
 </body>
