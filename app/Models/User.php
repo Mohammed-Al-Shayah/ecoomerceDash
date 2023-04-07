@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Trans;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Faker\Provider\ar_EG\Payment;
@@ -13,6 +14,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    protected $guarded=[];
 
     /**
      * The attributes that are mass assignable.

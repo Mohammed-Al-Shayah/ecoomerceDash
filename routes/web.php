@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserCotntroller;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -15,13 +17,13 @@ Route::prefix(LaravelLocalization::setLocale())->group(function(){
         Route::get('/', [AdminController::class,'index'])->name("index");
         Route::resource('category', CategoryController::class);
         Route::resource('product',ProductController::class);
+        Route::resource('user',UserCotntroller::class);
+        Route::resource('order',OrderController::class);
     });
 
 });
 
 Auth::routes(['verify'=>true]);
-
-
 
 Route::view('no-access', 'error404');
 

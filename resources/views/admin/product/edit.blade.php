@@ -63,7 +63,7 @@
                 <div class="mb-3">
                     <label for="sale_price">sale price</label>
                     <input type="text" id="sale_price" name="sale_price" class="form-control"
-                        value="{{ $product->name_ar }}" />
+                        value="{{ $product->sale_price }}" />
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
                         value="{{ $product->category_id }}">
                         <option value="">Select</option>
                         @foreach ($categories as $item)
-                            <option @selected($products->category_id == $item->id) value="{{ $item->id }}">{{ $item->trans_name }}
+                            <option @selected($product->category_id == $item->id) value="{{ $item->id }}">{{ $item->trans_name }}
                             </option>
                         @endforeach
 
@@ -122,5 +122,19 @@
 
 
     </form>
+
+@stop
+@section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.4.1/tinymce.min.js"
+        integrity="sha512-in/06qQzsmVw+4UashY2Ta0TE3diKAm8D4aquSWAwVwsmm1wLJZnDRiM6e2lWhX+cSqJXWuodoqUq91LlTo1EA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        tinymce.init({
+            selector: ".myeditor"
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+    </script>
 
 @stop

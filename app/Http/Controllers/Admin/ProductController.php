@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $product=new Product();
+        $products=new Product();
         $categories=Category::all();
         return view('admin.product.create', compact('products','categories'));
 
@@ -53,7 +53,7 @@ class ProductController extends Controller
 
         $name=json_encode([
             'en'=>$request->name_en,
-            'en'=>$request->name_en,
+            'ar'=>$request->name_ar,
         ],JSON_UNESCAPED_UNICODE);
 
         $content=json_encode([
@@ -90,11 +90,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-
         // dd('saa');
         $categories=Category::all();
         $product=Product::findOrFail($id);
-        view('admin.product.edit',compact('product','categories'));
+        return view('admin.product.edit',compact('product','categories'));
 
     }
 
@@ -115,7 +114,7 @@ class ProductController extends Controller
             'content_ar'=>'required',
         ]);
 
-        $img_path=$request->image;
+        $img_path=$product->image;
         if($request->hasFile('image')){
             $img_path=rand().time().$request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('uploads/products'),$img_path);
@@ -124,7 +123,7 @@ class ProductController extends Controller
 
         $name=json_encode([
             'en'=>$request->name_en,
-            'en'=>$request->name_en,
+            'ar'=>$request->name_ar,
         ],JSON_UNESCAPED_UNICODE);
 
         $content=json_encode([
