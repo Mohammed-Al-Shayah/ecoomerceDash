@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
-use PhpParser\JsonDecoder;
 
 class CategoryController extends Controller
 {
@@ -15,17 +13,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('perant')->orderByDesc('id')->paginate(5);
-        return view('admin.categories.index', compact('categories'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
         $categories = Category::all();
-        return view('admin.categories.create', compact('categories'));
+
+        if($categories->count()>0){
+            return response()->json([
+                'message'=>'All Category',
+                'status'=>'Success',
+                'data'=>$categories,
+            ],201);
+        }else{
+            return response()->json([
+                'message'=>'No Category',
+                'status'=>'Success',
+                'data'=>$categories,
+            ],404);
+        }
+
     }
 
     /**
@@ -51,13 +54,14 @@ class CategoryController extends Controller
         ],JSON_UNESCAPED_UNICODE);
 
             //Insert To Database
-        Category::create([
+            $category=Category::create([
             'name' => $name,
             'image' =>$img_path,
             'parent_id' => $request->parent_id,
         ]);
-        //Redirect
-        return redirect()->route('admin.category.index')->with('msg', 'Created category successfully')->with('type', 'success');
+
+
+        return response()->json($category, 201);
     }
 
     /**
@@ -65,17 +69,8 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $categories=Category::all();
-        $category=$categories->find($id);
-        return view('admin.categories.edit',compact('categories','category'));
+        $category = Category::findOrFail($id);
+        return response()->json($category);
     }
 
     /**
@@ -83,35 +78,39 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category=Category::findOrFail($id);
-
-        //validate data
-        $request->validate([
-            'name_en' => 'required',
-            'name_ar' => 'required',
-            'parent_id' => 'nullable|exists:categories,id',
-        ]);
+        $category = Category::findOrFail($id);
+        $data=$request->all();
 
         //Upload File
         $img_name  =$category->image;
         if($request->hasFile('image')){
             $img_name = rand() . time() . $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('uploads/categories'), $img_name);
+            $data['image']=$img_name;
         }
         //convert name to jason
-        $name=json_encode([
-            'en'=>$request->name_en,
-            'ar'=>$request->name_ar,
-        ],JSON_UNESCAPED_UNICODE);
+        if($request->has('name_en')){
+            $name=json_encode([
+                'en'=>$request->name_en,
+                'ar'=>$category->name_ar,
+            ],JSON_UNESCAPED_UNICODE);
+        }
 
+        if($request->has('name_ar')){
+            $name=json_encode([
+                'en'=>$category->name_en,
+                'ar'=>$request->name_ar,
+            ],JSON_UNESCAPED_UNICODE);
+        }
+
+        if($request->has('name_en')||$request->has('name_ar')){
+            $data['name']=$name;
+            unset($data['name_en']);
+            unset($data['name_ar']);
+        }
         //Insert To Database
-        $category->update([
-            'name' =>  $name,
-            'image' =>  $img_name,
-            'parent_id' => $request->parent_id,
-        ]);
-        //Redirect
-        return redirect()->route('admin.category.index')->with('msg', ' category updated  successfully')->with('type', 'info');
+        $category->update($data);
+        return response()->json($category, 200);
     }
 
     /**
@@ -120,12 +119,7 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $category = Category::findOrFail($id);
-
-        File::delete(public_path('uploads/categoris/' . $category->image));
-        $category->children()->update(['parent_id' => null]);
         $category->delete();
-
-        return redirect()->route('admin.category.index')->with('msg', 'category deleted successfully')->with('type', 'danger');
+        return response()->json(null, 204);
     }
-
 }

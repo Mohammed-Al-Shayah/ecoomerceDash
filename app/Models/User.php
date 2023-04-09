@@ -15,18 +15,8 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded=[];
+    protected $guarded=['id'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -73,4 +63,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Payment::class);
     }
+
+    // public function ScopeActive($query)
+    // {
+    //     $query->whereActive(1);
+    // }
 }
