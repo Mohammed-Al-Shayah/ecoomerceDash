@@ -17,9 +17,9 @@ class AuthController extends Controller
 
 
         $user = User::whereEmail($request->email)->first();
-        if($user) {
+        if ($user) {
 
-            if(Hash::check($request->password, $user->password)) {
+            if (Hash::check($request->password, $user->password)) {
 
                 Auth::login($user);
 
@@ -34,36 +34,75 @@ class AuthController extends Controller
                         'token' => $token
                     ]
                 ], 200);
-               // return response()->success($data,"sucess",200);
+                // return response()->success($data,"sucess",200);
 
-            }else {
+            } else {
                 return response()->json([
                     'message' => 'Password does Not Match',
                     'status' => 'Success',
                     'data' => []
                 ], 200);
             }
-
-        }else {
+        } else {
             return response()->json([
                 'message' => 'No User Found',
                 'status' => 'Success',
                 'data' => []
             ], 404);
         }
-
-
     }
 
     public function profile(Request $request)
     {
-        $user=User::findOrFail($request->id);
-        return response()->success(new UserResource($user),"sucess",200);
+        $user = User::findOrFail($request->id);
+        return response()->success(new UserResource($user), "sucess", 200);
     }
 
     public function list_of_users(Request $request)
     {
-        $users=User::all();
-        return response()->success(UserResource::collection($users),"sucess",200);
+        $users = User::all();
+        return response()->success(UserResource::collection($users), "sucess", 200);
+    }
+
+    public function register(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|min:8',
+        ]);
+
+        $user = new User();
+
+        if ($user) {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->save();
+
+
+            return response()->json([
+                'message' => 'Registration successful',
+                'user' => $user,
+                'data' => []
+            ], 201);
+        } else {
+            return response()->json([
+                'message' => "erorr Registration",
+                'status' => 'Success',
+                'data' => []
+            ], 404);
+        }
+    }
+
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return response()->json([
+            'message' => 'Logout successful',
+            'data' => []
+        ], 201);
     }
 }
