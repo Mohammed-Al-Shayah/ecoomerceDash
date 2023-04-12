@@ -42,7 +42,7 @@ class ProductController extends Controller
         $request->validated();
 
 
-        $img_path=rand().time().$request->file('image');
+        $img_path=rand().time().$request->file('image')->getClientOriginalExtension();
         $request->file('image')->move(public_path('uploads/products'),$img_path);
 
         $name=json_encode([
@@ -101,7 +101,7 @@ class ProductController extends Controller
 
         $img_path=$product->image;
         if($request->hasFile('image')){
-            $img_path=rand().time().$request->file('image');
+            $img_path=rand().time().$request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('uploads/products'),$img_path);
         }
 

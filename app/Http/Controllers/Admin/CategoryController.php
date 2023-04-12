@@ -37,7 +37,7 @@ class CategoryController extends Controller
         //validate data
         $request->validated();
         //Upload File
-        $img_path = rand() . time() . $request->file('image');
+        $img_path = rand() . time() . '.' . $request->file('image')->getClientOriginalExtension();
         $request->file('image')->move(public_path('uploads/categories'), $img_path);
 
         //convert name to jason
@@ -87,7 +87,7 @@ class CategoryController extends Controller
         //Upload File
         $img_name  =$category->image;
         if($request->hasFile('image')){
-            $img_name = rand() . time() . $request->file('image');
+            $img_name = rand() . time() . $request->file('image')->getClientOriginalExtension();
             $request->file('image')->move(public_path('uploads/categories'), $img_name);
         }
         //convert name to jason
@@ -114,7 +114,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         File::delete(public_path('uploads/categoris/' . $category->image));
-        $category->children()->update(['parent_id' => null]);
+        // $category->children()->update(['parent_id' => null]);
         $category->delete();
 
         return redirect()->route('admin.category.index')->with('msg', 'category deleted successfully')->with('type', 'danger');
