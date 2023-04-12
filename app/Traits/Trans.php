@@ -7,7 +7,7 @@ trait Trans
     public function getTransNameAttribute()
     {
         if($this->name){
-          return  json_decode($this->name,true)[app()->currentLocale()];
+          return  $this->name [app()->currentLocale()];
 
         }else {
             return $this->name;
@@ -17,7 +17,7 @@ trait Trans
     public function getNameEnAttribute()
     {
         if($this->name){
-          return  json_decode($this->name,true)['en'];
+          return  $this->name ['en'];
 
         }else {
             return $this->name;
@@ -27,7 +27,7 @@ trait Trans
     public function getNameArAttribute()
     {
         if($this->name){
-          return  json_decode($this->name,true)['ar'];
+          return  $this->name ['ar'];
 
         }else {
             return $this->name;
@@ -38,7 +38,7 @@ trait Trans
     public function getTransContentAttribute()
     {
         if($this->content){
-          return  json_decode($this->content,true)[app()->currentLocale()];
+          return   $this->content [app()->currentLocale()];
 
         }else {
             return $this->content;
@@ -48,7 +48,7 @@ trait Trans
     public function getContentEnAttribute()
     {
         if($this->content){
-          return  json_decode($this->content,true)['en'];
+          return  $this->content ['en'];
 
         }else {
             return $this->content;

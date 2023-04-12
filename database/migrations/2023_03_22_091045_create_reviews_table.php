@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('comment');
             $table->string('star');
-            $table->foreignId('product_id');
-            $table->foreignId('user_id');
+            $table->foreignId('product_id')->references('id')->on('products');
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

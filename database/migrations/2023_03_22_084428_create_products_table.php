@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double('salary');
             $table->double('sale_price')->nullable();
             $table->integer('quantity')->default(1);
-            $table->foreignId('category_id');
+            $table->foreignId('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }

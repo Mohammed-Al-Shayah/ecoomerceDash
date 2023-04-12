@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
 use Illuminate\Support\Facades\File;
 use PhpParser\JsonDecoder;
 
@@ -31,17 +32,12 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
         //validate data
-        $request->validate([
-            'name_en' => 'required',
-            'name_ar' => 'required',
-            'image' => 'required',
-            'parent_id' => 'nullable |exists:categories,id',
-        ]);
+        $request->validated();
         //Upload File
-        $img_path = rand() . time() . $request->file('image')->getClientOriginalName();
+        $img_path = rand() . time() . $request->file('image');
         $request->file('image')->move(public_path('uploads/categories'), $img_path);
 
         //convert name to jason
@@ -81,21 +77,17 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreCategoryRequest $request, string $id)
     {
         $category=Category::findOrFail($id);
 
         //validate data
-        $request->validate([
-            'name_en' => 'required',
-            'name_ar' => 'required',
-            'parent_id' => 'nullable|exists:categories,id',
-        ]);
+        $request->validated();
 
         //Upload File
         $img_name  =$category->image;
         if($request->hasFile('image')){
-            $img_name = rand() . time() . $request->file('image')->getClientOriginalName();
+            $img_name = rand() . time() . $request->file('image');
             $request->file('image')->move(public_path('uploads/categories'), $img_name);
         }
         //convert name to jason

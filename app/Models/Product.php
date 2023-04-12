@@ -13,6 +13,11 @@ class Product extends Model
 
     protected $guarded=[];
     protected $fillable=['name', 'image', 'salary', 'quantity', 'category_id', 'content','sale_price'];
+    protected $casts = [
+        'name' => 'json',
+        'content'=>'json',
+    ];
+
 
     public function category()
     {

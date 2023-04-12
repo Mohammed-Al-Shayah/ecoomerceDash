@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
@@ -34,21 +36,13 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $request->validate([
-            'name_en'=>'required',
-            'name_ar'=>'required',
-            'image'=>'required',
-            'salary'=>'required',
-            'quantity'=>'required',
-            'category_id'=>'required',
-            'content_en'=>'required',
-            'content_ar'=>'required',
-        ]);
+
+        $request->validated();
 
 
-        $img_path=rand().time().$request->file('image')->getClientOriginalName();
+        $img_path=rand().time().$request->file('image');
         $request->file('image')->move(public_path('uploads/products'),$img_path);
 
         $name=json_encode([
@@ -100,23 +94,14 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreProductRequest $request, string $id)
     {
         $product = Product::findOrFail($id);
-        $request->validate([
-            'name_en'=>'required',
-            'name_ar'=>'required',
-            'image'=>'required',
-            'salary'=>'required',
-            'quantity'=>'required',
-            'category_id'=>'required',
-            'content_en'=>'required',
-            'content_ar'=>'required',
-        ]);
+        $request->validated();
 
         $img_path=$product->image;
         if($request->hasFile('image')){
-            $img_path=rand().time().$request->file('image')->getClientOriginalName();
+            $img_path=rand().time().$request->file('image');
             $request->file('image')->move(public_path('uploads/products'),$img_path);
         }
 

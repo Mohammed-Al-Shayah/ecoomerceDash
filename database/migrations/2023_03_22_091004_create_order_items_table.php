@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->double('price');
             $table->integer('quantity')->default(1);
-            $table->foreignId('product_id');
-            $table->foreignId('user_id');
-            $table->foreignId('order_id');
+            $table->foreignId('product_id')->references('id')->on('products');
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

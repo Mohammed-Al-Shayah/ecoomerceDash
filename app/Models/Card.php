@@ -11,7 +11,7 @@ class Card extends Model
 
     public function prodect()
     {
-        return $this->belongsTo(Review::class);
+        return $this->belongsTo(Product::class);
     }
 
     public function user()

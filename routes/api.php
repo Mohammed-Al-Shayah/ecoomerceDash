@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
 });
 
 
-Route::prefix('v1')->middleware('auth:sanctum','userType')->group(function () {
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('categories', CategoryController::class);
 });
 
