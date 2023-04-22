@@ -9,6 +9,7 @@ use Faker\Provider\ar_EG\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Notification;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -65,8 +66,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Payment::class);
     }
 
+    // public function notifications()
+    // {
+    //     return $this->hasMany(Notification::class);
+    //     }
+
     // public function ScopeActive($query)
     // {
     //     $query->whereActive(1);
     // }
+
+
 }

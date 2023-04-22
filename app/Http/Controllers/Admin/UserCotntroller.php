@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use App\Notifications\AdminNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use PHPUnit\Metadata\Uses;
 
 class UserCotntroller extends Controller
@@ -15,6 +19,9 @@ class UserCotntroller extends Controller
     public function index()
     {
         $users=User::orderByDesc('id')->paginate(5);
+        // $notifications = auth()->user()->unreadNotifications;
+
+
         return view('admin.users.index',compact('users'));
     }
 
@@ -23,15 +30,35 @@ class UserCotntroller extends Controller
      */
     public function create()
     {
-        //
+        $users=User::all();
+        return view('admin.users.create',compact('users'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        $user = new User();
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->password = Hash::make($validatedData['password']);
+        $user->type = $validatedData['type'];
+        $user->save();
+
+
+
+        $admin = Auth::user();
+
+            if ($admin) {
+                $admin->notify(new AdminNotification($user));
+            }
+
+
+
+        return redirect()->route('admin.user.index')->with('msg','Add user successfully')->with('type','success');
     }
 
     /**
