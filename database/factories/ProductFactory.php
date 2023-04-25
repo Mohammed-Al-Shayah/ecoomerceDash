@@ -18,7 +18,10 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=> fake()->name(),
+            'name'=> json_encode([
+                'en'=>fake()->name(),
+                'ar'=>fake()->name(),
+            ],JSON_UNESCAPED_UNICODE),
             'content'=>fake()->paragraph(3,true),
             'image'=>fake()->imageUrl(),
             'salary'=>fake()->randomFloat(2,10,100),
