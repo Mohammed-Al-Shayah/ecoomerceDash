@@ -31,6 +31,11 @@
 
                                 @forelse($categories as $category)
 
+                                @php
+
+                                   //  dd($category->id );
+                                @endphp
+
                                 <tr>
                                     <td>{{ $category->id }}</td>
                                     <td>

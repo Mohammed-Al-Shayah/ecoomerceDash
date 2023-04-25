@@ -11,9 +11,9 @@ class Category extends Model
     use HasFactory,Trans;
     protected $guarded=[];
     protected $fillable=['name','image','parent_id'];
-    protected $casts = [
-        'name' => 'json',
-    ];
+    // protected $casts = [
+    //     'name' => 'json',
+    // ];
 
     public function perant()
     {
