@@ -19,5 +19,12 @@ class DatabaseSeeder extends Seeder
         Product::factory(10)->create([
             'category_id' => $m->id,
         ]);
+
+        $this->call([
+            UserSeeder::class,
+            CategorySeeder::class,
+            productSeeder::class,
+        ]);
+
     }
 }

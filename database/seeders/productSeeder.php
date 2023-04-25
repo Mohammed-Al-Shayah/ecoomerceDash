@@ -29,7 +29,7 @@ class productSeeder extends Seeder
                 'salary' => 25.0,
                 'sale_price' => 20.0,
                 'quantity' => 10,
-                'category_id' => 11,
+                'category_id' => 1,
             ],
             [
                 'name' =>json_encode([
@@ -44,7 +44,7 @@ class productSeeder extends Seeder
                 'salary' => 25.0,
                 'sale_price' => 20.0,
                 'quantity' => 10,
-                'category_id' => 11,
+                'category_id' => 1,
             ],
         ];
 

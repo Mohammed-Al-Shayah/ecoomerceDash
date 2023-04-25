@@ -16,9 +16,10 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'name' => 'mohammedalshayah',
-            'email' => 'mohammedtareq@gmail.com',
+            'email' => 'mohammedalshayah@gmail.com',
             'password' => Hash::make('123456789'),
-            'type'=>'admin'
+            'type'=>'admin',
+            'email_verified_at'=>now(),
         ]);
 
 
